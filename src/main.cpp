@@ -5,31 +5,31 @@
 #include <ESP32Servo.h>
 
 // Erstellt Objekt Servomotoren zum Controlieren im programm
-Servo servoHorizont;
-Servo servoVertikal;
+Servo servoHorizontal;
+Servo servoVertical;
 
 // Zuweisung der LDR Sensoren zu einem Pin
 // Const ersetzt #define (Const erstellt genau wie defin eine Konstante nur das const auch bei Arrays funktioniert und defin nicht.)
-const int LDR_Links = A0;
-const int LDR_Rechts = A5;
-const int LDR_Oben = A6;
-const int LDR_Unten = A7;
+const int lightDependentResistorLeft = A0;
+const int lightDependentResistorRight = A5;
+const int lightDependentResistorUpper = A6;
+const int lightDependentResistorLower = A7;
 
 // Legt die Startposition (0-180) der servomotoren fest.
-int posHorizontal = 90;
-int posVertical = 90;
+int positionHorizontal = 90;
+int positionVertical = 90;
 
 void setup()
 {
   // Standard-Servo: 50 Hz
-  servoHorizont.setPeriodHertz(50);
-  servoVertikal.setPeriodHertz(50);
+  servoHorizontal.setPeriodHertz(50);
+  servoVertical.setPeriodHertz(50);
   // Pinzuweisung der Servomotoren
-  servoHorizont.attach(18);
-  servoVertikal.attach(19);
+  servoHorizontal.attach(18);
+  servoVertical.attach(19);
   //
-  servoHorizont.write(posHorizontal);
-  servoVertikal.write(posVertical);
+  servoHorizontal.write(positionHorizontal);
+  servoVertical.write(positionVertical);
 
   Serial.begin(115200);
 }
@@ -49,39 +49,39 @@ void loop()
   if (millis() - lastExecute > 50)
   {
     lastExecute = millis();
-    int lichtLinks = analogRead(LDR_Links);
-    int lichtRechts = analogRead(LDR_Rechts);
-    int lichtOben = analogRead(LDR_Oben);
-    int lichtUnten = analogRead(LDR_Unten);
+    int leftLDRValue = analogRead(lightDependentResistorLeft);
+    int rightLDRValue = analogRead(lightDependentResistorRight);
+    int upperLDRValue = analogRead(lightDependentResistorUpper);
+    int lowerLDRValue = analogRead(lightDependentResistorLower);
 
     // Horizontale Anpassung
-    if (lichtLinks > lichtRechts + 10)
+    if (leftLDRValue > rightLDRValue + 10)
     {
-      posHorizontal = constrain(posHorizontal - 1, 0, 180);
+      positionHorizontal = constrain(positionHorizontal - 1, 0, 180);
     }
-    else if (lichtRechts > lichtLinks + 10)
+    else if (rightLDRValue > leftLDRValue + 10)
     {
-      posHorizontal = constrain(posHorizontal + 1, 0, 180);
+      positionHorizontal = constrain(positionHorizontal + 1, 0, 180);
     }
 
     // Vertikale Anpassung
-    if (lichtOben > lichtUnten + 10)
+    if (upperLDRValue > lowerLDRValue + 10)
     {
-      posVertical = constrain(posVertical + 1, 0, 180);
+      positionVertical = constrain(positionVertical + 1, 0, 180);
     }
-    else if (lichtUnten > lichtOben + 10)
+    else if (lowerLDRValue > upperLDRValue + 10)
     {
-      posVertical = constrain(posVertical - 1, 0, 180);
+      positionVertical = constrain(positionVertical - 1, 0, 180);
     }
 
     // Servos bewegen
-    servoHorizont.write(posHorizontal);
-    servoVertikal.write(posVertical);
+    servoHorizontal.write(positionHorizontal);
+    servoVertical.write(positionVertical);
 
     // Debugging
     Serial.print("Horizont: ");
-    Serial.print(posHorizontal);
+    Serial.print(positionHorizontal);
     Serial.print(" Vertikal: ");
-    Serial.println(posVertical);
+    Serial.println(positionVertical);
   }
 }
