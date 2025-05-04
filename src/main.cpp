@@ -33,7 +33,16 @@ void setup()
 
   Serial.begin(115200);
 }
-//
+/**
+ *  ✅ Non-blocking code (millis-based)
+ *  The millis() approach doesn't block execution. The loop() function keeps running, and you only do your task every 50 milliseconds.
+ *  This allows other code to run in the meantime — like checking sensors, handling communication (like serial or network), or responding to user inputs.
+ *  It's ideal for multitasking, especially in microcontroller environments like Arduino.
+ *  ❌ Blocking code (delay-based)
+ *  The delay(50) line blocks the CPU for 50 milliseconds, doing absolutely nothing.
+ *  During the delay, the program can't respond to inputs, run other logic, or check sensors.
+ *  This is fine for very simple programs, but scales poorly as your project becomes more complex.
+ */
 u_int64_t lastExecute = 0;
 void loop()
 {
