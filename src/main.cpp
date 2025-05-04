@@ -10,10 +10,10 @@ Servo servoVertikal;
 
 // Zuweisung der LDR Sensoren zu einem Pin
 // Const ersetzt #define (Const erstellt genau wie defin eine Konstante nur das const auch bei Arrays funktioniert und defin nicht.)
-const int LDR_Links = 32;
-const int LDR_Rechts = 33;
-const int LDR_Oben = 34;
-const int LDR_Unten = 35;
+const int LDR_Links = A0;
+const int LDR_Rechts = A5;
+const int LDR_Oben = A6;
+const int LDR_Unten = A7;
 
 // Legt die Startposition (0-180) der servomotoren fest.
 int posHorizontal = 90;
