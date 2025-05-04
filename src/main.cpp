@@ -33,43 +33,46 @@ void setup()
 
   Serial.begin(115200);
 }
-
+//
+u_int64_t lastExecute = 0;
 void loop()
 {
-  int lichtLinks = analogRead(LDR_Links);
-  int lichtRechts = analogRead(LDR_Rechts);
-  int lichtOben = analogRead(LDR_Oben);
-  int lichtUnten = analogRead(LDR_Unten);
-
-  // Horizontale Anpassung
-  if (lichtLinks > lichtRechts + 10)
+  if (millis() - lastExecute > 50)
   {
-    posHorizontal = constrain(posHorizontal - 1, 0, 180);
-  }
-  else if (lichtRechts > lichtLinks + 10)
-  {
-    posHorizontal = constrain(posHorizontal + 1, 0, 180);
-  }
+    lastExecute = millis();
+    int lichtLinks = analogRead(LDR_Links);
+    int lichtRechts = analogRead(LDR_Rechts);
+    int lichtOben = analogRead(LDR_Oben);
+    int lichtUnten = analogRead(LDR_Unten);
 
-  // Vertikale Anpassung
-  if (lichtOben > lichtUnten + 10)
-  {
-    posVertical = constrain(posVertical + 1, 0, 180);
+    // Horizontale Anpassung
+    if (lichtLinks > lichtRechts + 10)
+    {
+      posHorizontal = constrain(posHorizontal - 1, 0, 180);
+    }
+    else if (lichtRechts > lichtLinks + 10)
+    {
+      posHorizontal = constrain(posHorizontal + 1, 0, 180);
+    }
+
+    // Vertikale Anpassung
+    if (lichtOben > lichtUnten + 10)
+    {
+      posVertical = constrain(posVertical + 1, 0, 180);
+    }
+    else if (lichtUnten > lichtOben + 10)
+    {
+      posVertical = constrain(posVertical - 1, 0, 180);
+    }
+
+    // Servos bewegen
+    servoHorizont.write(posHorizontal);
+    servoVertikal.write(posVertical);
+
+    // Debugging
+    Serial.print("Horizont: ");
+    Serial.print(posHorizontal);
+    Serial.print(" Vertikal: ");
+    Serial.println(posVertical);
   }
-  else if (lichtUnten > lichtOben + 10)
-  {
-    posVertical = constrain(posVertical - 1, 0, 180);
-  }
-
-  // Servos bewegen
-  servoHorizont.write(posHorizontal);
-  servoVertikal.write(posVertical);
-
-  // Debugging
-  Serial.print("Horizont: ");
-  Serial.print(posHorizontal);
-  Serial.print(" Vertikal: ");
-  Serial.println(posVertical);
-
-  delay(50);
 }
