@@ -1,6 +1,7 @@
 //Treiber Instalieren (Port + Bord Treiber)
 //Richtiges Bord und Port auswelen
 //Einfügen der Serbiblotoeck für den ESP32 (Servo.h ist nicht kompatibel mit dem ESP32)
+#include <Arduino.h>
 #include <ESP32Servo.h>
 
 // Erstellt Objekt Servomotoren zum Controlieren im programm
