@@ -21,9 +21,6 @@ int positionVertical = 90;
 
 void setup()
 {
-  // Standard-Servo: 50 Hz
-  servoHorizontal.setPeriodHertz(50);
-  servoVertical.setPeriodHertz(50);
   // Pinzuweisung der Servomotoren
   servoHorizontal.attach(18);
   servoVertical.attach(19);
