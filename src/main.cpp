@@ -8,6 +8,10 @@
 Servo servoHorizontal;
 Servo servoVertical;
 
+// Pinzuweisung der Servomotoren
+const int servoHorizontalPin = 18;
+const int servoVerticalPin = 19;
+
 // Zuweisung der LDR Sensoren zu einem Pin
 // Const ersetzt #define (Const erstellt genau wie defin eine Konstante nur das const auch bei Arrays funktioniert und defin nicht.)
 const int lightDependentResistorLeft = A0;
@@ -22,8 +26,8 @@ int positionVertical = 90;
 void setup()
 {
   // Pinzuweisung der Servomotoren
-  servoHorizontal.attach(18);
-  servoVertical.attach(19);
+  servoHorizontal.attach(servoHorizontalPin);
+  servoVertical.attach(servoVerticalPin);
   //
   servoHorizontal.write(positionHorizontal);
   servoVertical.write(positionVertical);
