@@ -9,8 +9,8 @@ Servo servoHorizontal;
 Servo servoVertical;
 
 // Pinzuweisung der Servomotoren
-const int servoHorizontalPin = 18;
-const int servoVerticalPin = 19;
+const int servoHorizontalPin = A0; //Pin mit ADC Verbindung
+const int servoVerticalPin = A3;
 
 // Zuweisung der LDR Sensoren zu einem Pin
 // Const ersetzt #define (Const erstellt genau wie defin eine Konstante nur das const auch bei Arrays funktioniert und defin nicht.)
