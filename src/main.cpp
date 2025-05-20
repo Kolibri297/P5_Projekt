@@ -95,8 +95,8 @@ void loop()
 
     // Debugging
     Serial.print("Horizont: ");
-    Serial.print(positionHorizontal);
-    Serial.print(" Vertikal: ");
+    Serial.println(positionHorizontal);
+    Serial.print("Vertikal: ");
     Serial.println(positionVertical);
   }
 }
