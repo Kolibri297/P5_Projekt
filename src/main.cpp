@@ -98,5 +98,13 @@ void loop()
     Serial.println(positionHorizontal);
     Serial.print("Vertikal: ");
     Serial.println(positionVertical);
+    Serial.print("leftLDRValue: ");
+    Serial.println(leftLDRValue);
+    Serial.print("rightLDRValue: ");
+    Serial.println(rightLDRValue);
+    Serial.print("lowerLDRValue: ");
+    Serial.println(lowerLDRValue);
+    Serial.print("upperLDRValue: ");
+    Serial.println(upperLDRValue);
   }
 }
