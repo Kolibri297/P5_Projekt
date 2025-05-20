@@ -64,24 +64,28 @@ void loop()
     // Horizontale Anpassung
     if (leftLDRValue > rightLDRValue + 10)
     {
-      // Wenn der linke LDR-Wert höher ist als der rechte LDR-Wert, wird die Position des horizontalen Servomotors nach links angepasst
+      // Wenn der linke LDR-Wert höher ist als der rechte LDR-Wert, 
+      //wird die Position des horizontalen Servomotors nach links angepasst
       positionHorizontal = constrain(positionHorizontal - 1, 0, 180);
     }
     else if (rightLDRValue > leftLDRValue + 10)
     {
-      // Wenn der rechte LDR-Wert höher ist als der linke LDR-Wert, wird die Position des horizontalen Servomotors nach rechts angepasst
+      //Wenn der rechte LDR-Wert höher ist als der linke LDR-Wert, 
+      //wird die Position des horizontalen Servomotors nach rechts angepasst
       positionHorizontal = constrain(positionHorizontal + 1, 0, 180);
     }
 
     // Vertikale Anpassung
     if (upperLDRValue > lowerLDRValue + 10)
     {
-      // Wenn der obere LDR-Wert höher ist als der untere LDR-Wert, wird die Position des vertikalen Servomotors nach oben angepasst
+      // Wenn der obere LDR-Wert höher ist als der untere LDR-Wert, 
+      //wird die Position des vertikalen Servomotors nach oben angepasst
       positionVertical = constrain(positionVertical + 1, 0, 180);
     }
     else if (lowerLDRValue > upperLDRValue + 10)
     {
-      // Wenn der untere LDR-Wert höher ist als der obere LDR-Wert, wird die Position des vertikalen Servomotors nach unten angepasst
+      // Wenn der untere LDR-Wert höher ist als der obere LDR-Wert, 
+      //wird die Position des vertikalen Servomotors nach unten angepasst
       positionVertical = constrain(positionVertical - 1, 0, 180);
     }
 
