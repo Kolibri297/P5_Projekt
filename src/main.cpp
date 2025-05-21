@@ -11,7 +11,7 @@ Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 // Number of servos you have
 const int servoCount = 2;
 // Define the PCA9685 pins for your servos
-const int servoPins[servoCount] = {0, 1}; // Todo: Anstatt 0,1 die Richtigen Pins.
+const int servoPins[servoCount] = {0, 3}; // Todo: Anstatt 0,1 die Richtigen Pins.
 // Array to store default positions for each servo
 int defaultPositions[servoCount] = {90, 90};
 // Array to store current servo angles
