@@ -2,6 +2,8 @@
 #include <Arduino.h> //Standardbibliothek des ESP32
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
+#define SERVOMIN 170
+#define SERVOMAX 650
 // Zuweisung der LDR Sensoren zu einem Pin
 // Const ersetzt #define (Const erstellt genau wie defin eine Konstante nur das const auch bei Arrays funktioniert und defin nicht.)
 const int lightDependentResistorLeft = A4;
