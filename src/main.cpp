@@ -1,15 +1,7 @@
 // Einfügen der Biblothek für den ESP32
-#include <Arduino.h>    //Standardbibliothek des ESP32
-#include <ESP32Servo.h> //Servo.h ist nicht kompatibel mit dem ESP32 deswegen ESP32Servo.h verwendet
-
-// Erstellt Objekt Servomotoren zum Controlieren im programm
-Servo servoHorizontal;
-Servo servoVertical;
-
-// Pinzuweisung der Servomotoren
-const int servoHorizontalPin = A0; //Pin mit ADC Verbindung
-const int servoVerticalPin = A3;
-
+#include <Arduino.h> //Standardbibliothek des ESP32
+#include <Wire.h>
+#include <Adafruit_PWMServoDriver.h>
 // Zuweisung der LDR Sensoren zu einem Pin
 // Const ersetzt #define (Const erstellt genau wie defin eine Konstante nur das const auch bei Arrays funktioniert und defin nicht.)
 const int lightDependentResistorLeft = A4;
