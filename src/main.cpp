@@ -2,8 +2,8 @@
 #include <Arduino.h> //Standardbibliothek des ESP32
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
-#define SERVOMIN 170
-#define SERVOMAX 650
+#define SERVOMIN 150
+#define SERVOMAX 600
 
 // Initialisiert der dafruit_PWMServoDriver klasse
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
@@ -25,11 +25,12 @@ const int lightDependentResistorUpper = A6;
 const int lightDependentResistorLower = A7;
 
 // Legt die Startposition (0-180) der servomotoren fest.
-int positionHorizontal = 0;
-int positionVertical = 0;
+int positionHorizontal = 90;
+int positionVertical = 90;
 
 //! Function declarations (prototypes)
-void moveServo(int servoIndex, int targetAngle); // Funktion zum Bewegen des Servos
+void moveServoSlow(int servoIndex, int targetAngle); // Funktion zum langsamen Bewegen des Servos
+void setServoAngle(int servoIndex, int angle); // Funktion zum direkten Setzen der Servoposition
 int angleToPulse(int angle);
 
 // Die setup() Funktion wird nur einmal am Anfang des Programms aufgerufen.
@@ -39,13 +40,14 @@ void setup()
 
   // Initialisiert die Servomotoren
   pwm.begin();
-  pwm.setPWMFreq(60);
+  pwm.setOscillatorFrequency(27000000);  // Set to 27MHz for better accuracy
+  pwm.setPWMFreq(50);  // Set PWM frequency to 50Hz
 
   // Setzt die Servomotoren auf die Startpositionen
   for (int i = 0; i < servoCount; i++)
   {
     servoAngles[i] = defaultPositions[i];
-    pwm.setPWM(servoPins[i], 0, angleToPulse(servoAngles[i]));
+    setServoAngle(i, servoAngles[i]);
   }
 }
 
@@ -70,7 +72,7 @@ void loop()
   {
     // Aktuelle Zeit speichern
     lastExecute = millis();
-    // Werte der Lichtabh ngigen Widerst nde auslesen
+    // Werte der Lichtabhängigen Widerstände auslesen
     int leftLDRValue = analogRead(lightDependentResistorLeft);
     int rightLDRValue = analogRead(lightDependentResistorRight);
     int upperLDRValue = analogRead(lightDependentResistorUpper);
@@ -104,9 +106,13 @@ void loop()
       positionVertical = constrain(positionVertical - 1, 0, 180);
     }
 
-    // Servos bewegen
-    moveServo(servoPins[0], positionHorizontal);
-    moveServo(servoPins[1], positionVertical);
+    // Servos langsam bewegen (nur wenn sich Position geändert hat)
+    if (servoAngles[0] != positionHorizontal) {
+      moveServoSlow(0, positionHorizontal);
+    }
+    if (servoAngles[1] != positionVertical) {
+      moveServoSlow(1, positionVertical);
+    }
 
     // Debugging
     Serial.print("Horizont: ");
@@ -124,28 +130,48 @@ void loop()
   }
 }
 
-
+/**
+ * @brief Set servo angle directly (0-180 degrees)
+ * @param servoIndex The index of the servo to move (0 or 1)
+ * @param angle The angle to set the servo to
+ */
+void setServoAngle(int servoIndex, int angle) {
+  // Constrain angle to valid range
+  angle = constrain(angle, 0, 180);
+  
+  // Map angle to pulse width
+  int pulseWidth = angleToPulse(angle);
+  
+  // Set PWM
+  pwm.setPWM(servoPins[servoIndex], 0, pulseWidth);
+}
 
 /**
- * @brief Smoothly move the servo to the target angle
- *
- * @param servoIndex The index of the servo to move
+ * @brief Smoothly move the servo to the target angle with slow movement
+ * @param servoIndex The index of the servo to move (0 or 1)
  * @param targetAngle The target angle to move the servo to
- *
- * This function moves the servo to the target angle over a period of time, by
- * smoothly increasing or decreasing the angle in increments of 1 degree. The
- * delay between each increment can be adjusted by changing the value of the
- * `delay` parameter.
  */
-void moveServo(int servoIndex, int targetAngle)
+void moveServoSlow(int servoIndex, int targetAngle)
 {
-  // Smoothly move the servo to the target angle
-  for (int i = servoAngles[servoIndex]; i != targetAngle; i += (targetAngle > i) ? 1 : -1)
-  {
-    servoAngles[servoIndex] = i;
-    pwm.setPWM(servoPins[servoIndex], 0, angleToPulse(i));
-    delay(10); // Adjust the delay for smoother motion
+  int currentAngle = servoAngles[servoIndex];
+  
+  // Move servo step by step with 50ms delay for slower movement
+  if (currentAngle < targetAngle) {
+    for (int angle = currentAngle; angle <= targetAngle; angle++) {
+      setServoAngle(servoIndex, angle);
+      servoAngles[servoIndex] = angle;
+      delay(50);  // 50ms delay for slower movement (like in reference code)
+    }
+  } else if (currentAngle > targetAngle) {
+    for (int angle = currentAngle; angle >= targetAngle; angle--) {
+      setServoAngle(servoIndex, angle);
+      servoAngles[servoIndex] = angle;
+      delay(50);  // 50ms delay for slower movement (like in reference code)
+    }
   }
+  
+  // Update final position
+  servoAngles[servoIndex] = targetAngle;
 }
 
 /**
