@@ -28,6 +28,10 @@ const int lightDependentResistorLower = A7;
 int positionHorizontal = 0;
 int positionVertical = 0;
 
+//! Function declarations (prototypes)
+void moveServo(int servoIndex, int targetAngle); // Funktion zum Bewegen des Servos
+int angleToPulse(int angle);
+
 // Die setup() Funktion wird nur einmal am Anfang des Programms aufgerufen.
 void setup()
 {
