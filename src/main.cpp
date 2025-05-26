@@ -19,10 +19,10 @@ int servoAngles[servoCount];
 
 // Zuweisung der LDR Sensoren zu einem Pin
 // Const ersetzt #define (Const erstellt genau wie defin eine Konstante nur das const auch bei Arrays funktioniert und defin nicht.)
-const int lightDependentResistorLeft = A4;
+const int lightDependentResistorLeft = A18;
 const int lightDependentResistorRight = A5;
-const int lightDependentResistorUpper = A6;
-const int lightDependentResistorLower = A7;
+const int lightDependentResistorUpper = A12;
+const int lightDependentResistorLower = A10;
 
 // Legt die Startposition (0-180) der servomotoren fest.
 int positionHorizontal = 90;
